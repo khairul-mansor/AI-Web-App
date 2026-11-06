@@ -44,7 +44,7 @@ python3 app.py
 http://localhost:8888
 
 ## Project Structure
-
+```
 flask_ai_app/
 ├── app.py                        # Main Flask application
 ├── agent.py                      # AI agent and tools
@@ -54,11 +54,11 @@ flask_ai_app/
 ├── static/
 │   └── uploads/                  # Uploaded images
 ├── user_config/
-│   ├── 25105700.json             # User memories and summary
-│   └── 25105700_history.json     # Full conversation history
+│   ├── 00.json             # User memories and summary
+│   └── 00_history.json     # Full conversation history
 ├── requirements.txt
 └── README.md
-
+```
 
 ## Usage Examples
 - **Math:** "what is 25 multiplied by 48?"
