@@ -44,6 +44,7 @@ python3 app.py
 http://localhost:8888
 
 ## Project Structure
+
 flask_ai_app/
 ├── app.py                        # Main Flask application
 ├── agent.py                      # AI agent and tools
