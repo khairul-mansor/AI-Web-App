@@ -1,0 +1,24 @@
+{
+  "user_id": "00",
+  "name": "X Y",
+  "memories": [
+    {
+      "text": "My name is X Y",
+      "timestamp": "2026-05-03T18:05:34.177231"
+    },
+    {
+      "text": "I am studying AI",
+      "timestamp": "2026-05-03T23:23:25.274105"
+    },
+    {
+      "text": "that I'm currently studying at",
+      "timestamp": "2026-05-14T19:24:19.075444"
+    }
+  ],
+  "conversation_summary": [
+    {
+      "summary": "User asked: what is 99 multiplied by 12?",
+      "timestamp": "2026-05-03T23:11:09.506095"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Chat</title>
+</head>
+<body>
+    <h1>AI Chat Assistant</h1>
+    <p>Student: X Y | ID: 00</p>
+
+    <!-- Message display area -->
+    <div id="chatMessages" style="height:400px; overflow-y:auto; border:1px solid #ccc; padding:10px;">
+        <p><b>AI:</b> Hello! How can I help you?</p>
+    </div>
+
+    <!-- Image preview -->
+    <div id="imagePreview" style="display:none;">
+        <img id="previewImg" src="" height="50"/>
+        <button onclick="clearImage()">Remove</button>
+    </div>
+
+    <!-- Input area -->
+    <input type="file" id="imageInput" accept="image/*" onchange="handleImageSelect(event)" style="display:none"/>
+    <button onclick="document.getElementById('imageInput').click()">Upload Image</button>
+    <input type="text" id="messageInput" placeholder="Type a message..." size="50" onkeypress="handleKeyPress(event)"/>
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        let uploadedImagePath = null;
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") sendMessage();
+        }
+
+        function handleImageSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById("previewImg").src = e.target.result;
+                document.getElementById("imagePreview").style.display = "block";
+            };
+            reader.readAsDataURL(file);
+
+            const formData = new FormData();
+            formData.append("image", file);
+
+            fetch("/upload", { method: "POST", body: formData })
+                .then(res => res.json())
+                .then(data => { uploadedImagePath = data.image_path; });
+        }
+
+        function clearImage() {
+            uploadedImagePath = null;
+            document.getElementById("imageInput").value = "";
+            document.getElementById("imagePreview").style.display = "none";
+        }
+
+        function addMessage(content, sender) {
+            const messages = document.getElementById("chatMessages");
+            const p = document.createElement("p");
+            p.innerHTML = `<b>${sender}:</b> ${content}`;
+            messages.appendChild(p);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById("messageInput");
+            const message = input.value.trim();
+            if (!message) return;
+
+            addMessage(message, "You");
+            input.value = "";
+            addMessage("Thinking...", "AI");
+
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message, image_path: uploadedImagePath })
+            })
+            .then(res => res.json())
+            .then(data => {
+                const messages = document.getElementById("chatMessages");
+                messages.lastChild.innerHTML = `<b>AI:</b> ${data.reply}`;
+            })
+            .catch(() => addMessage("Connection error.", "AI"));
+
+            clearImage();
+        }
+    </script>
+</body>
+</html>
